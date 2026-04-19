@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan — Site d'affiliation trading (anonyme)</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #161a22;
+    --panel-2: #1d222c;
+    --line: #272d38;
+    --text: #e7eaf0;
+    --muted: #9aa3b2;
+    --accent: #4f8cff;
+    --accent-2: #7ee787;
+    --warn: #f2cc60;
+    --danger: #ff7b72;
+    --ok: #56d364;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; line-height: 1.55; }
+  header { padding: 48px 32px 24px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #1a1f2a 0%, var(--bg) 100%); }
+  header h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: -0.01em; }
+  header p { margin: 0; color: var(--muted); max-width: 820px; }
+  nav { position: sticky; top: 0; background: rgba(15,17,21,.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); padding: 12px 32px; z-index: 5; display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; }
+  nav a { color: var(--muted); text-decoration: none; padding: 4px 8px; border-radius: 6px; }
+  nav a:hover { color: var(--text); background: var(--panel-2); }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px; }
+  section { margin: 40px 0; }
+  h2 { font-size: 22px; letter-spacing: -0.01em; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 16px; margin: 24px 0 8px; color: var(--text); }
+  h4 { font-size: 14px; margin: 16px 0 4px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .kicker { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 780px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+  .card h3 { margin-top: 0; }
+  .pill { display: inline-block; padding: 2px 8px; font-size: 11px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); margin-right: 4px; }
+  .pill.ok { border-color: rgba(86,211,100,.35); color: var(--ok); }
+  .pill.warn { border-color: rgba(242,204,96,.35); color: var(--warn); }
+  .pill.danger { border-color: rgba(255,123,114,.35); color: var(--danger); }
+  .pill.accent { border-color: rgba(79,140,255,.35); color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; background: var(--panel-2); }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  .callout { border-left: 3px solid var(--accent); background: var(--panel); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+  .callout.warn { border-left-color: var(--warn); }
+  .callout.danger { border-left-color: var(--danger); }
+  .callout.ok { border-left-color: var(--accent-2); }
+  .callout strong { color: var(--text); }
+  ul { padding-left: 20px; }
+  li { margin: 4px 0; }
+  .timeline { position: relative; padding-left: 22px; }
+  .timeline::before { content: ""; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 2px; background: var(--line); }
+  .phase { position: relative; padding: 12px 0 12px 12px; }
+  .phase::before { content: ""; position: absolute; left: -22px; top: 18px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg); }
+  .phase h3 { margin: 0 0 4px; }
+  .phase .meta { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .scoreboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .score { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; text-align: center; }
+  .score .v { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .score .l { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  @media (max-width: 780px) { .scoreboard { grid-template-columns: repeat(2,1fr); } }
+  footer { padding: 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; text-align: center; }
+  .src { font-size: 12px; color: var(--muted); }
+  .src a { color: var(--muted); }
+  .grade { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; letter-spacing: .05em; }
+  .grade.A { background: rgba(86,211,100,.15); color: var(--ok); }
+  .grade.B { background: rgba(79,140,255,.15); color: var(--accent); }
+  .grade.C { background: rgba(242,204,96,.15); color: var(--warn); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Site d'affiliation trading — Plan d'action consolidé</h1>
+  <p>Synthèse de quatre rapports de recherche (trafic, contenu, conversion, conformité) + vérification croisée. Marque anonyme (faceless), audience francophone, budget débutant.</p>
+  <p class="src" style="margin-top:12px;">Généré le 2026-04-19 · cible : <code>~/Desktop/projects/test 1</code> · repo GitHub <code>Rredaaaa/test-1</code></p>
+</header>
+
+<nav>
+  <a href="#resume">Résumé exécutif</a>
+  <a href="#workflow">Workflow</a>
+  <a href="#trafic">Trafic</a>
+  <a href="#contenu">Contenu</a>
+  <a href="#conversion">Conversion</a>
+  <a href="#conformite">Conformité</a>
+  <a href="#calendrier">Calendrier 12 mois</a>
+  <a href="#projections">Projections</a>
+  <a href="#reserves">Réserves du vérificateur</a>
+</nav>
+
+<main>
+
+<section id="resume">
+  <h2>1. Résumé exécutif</h2>
+  <div class="kicker">Ce que disent les 4 agents, une fois croisés.</div>
+
+  <div class="scoreboard">
+    <div class="score"><div class="v">3–9 mois</div><div class="l">Premiers revenus notables</div></div>
+    <div class="score"><div class="v">1 500–6 000 €</div><div class="l">Budget 12 mois (hors ads)</div></div>
+    <div class="score"><div class="v">0,5–1,5 %</div><div class="l">Taux clic → FTD typique</div></div>
+    <div class="score"><div class="v">70–80 %</div><div class="l">Sites qui n'atteignent pas 500 €/mois</div></div>
+  </div>
+
+  <div class="callout">
+    <strong>Recommandation combinée :</strong> démarrer avec un trio <em>SEO (comparatifs + reviews) + YouTube faceless + liste email</em>. Ajouter Telegram et X (fintwit) après 3 mois. Ne pas investir en paid ads avant d'avoir un funnel prouvé. Promouvoir uniquement des brokers régulés AMF/ESMA.
+  </div>
+
+  <div class="callout warn">
+    <strong>Réalité légale :</strong> l'anonymat parfait est impossible en France — un SIRET et une identité doivent figurer dans les mentions légales et au registre. Tu peux en revanche éditer sous pseudonyme public, via auto-entreprise ou SASU, tant que les mentions légales obligatoires sont présentes.
+  </div>
+</section>
+
+<section id="workflow">
+  <h2>2. Workflow détaillé</h2>
+  <div class="kicker">Phases séquentielles. Chaque phase a des livrables concrets.</div>
+
+  <div class="timeline">
+    <div class="phase">
+      <h3>Phase 0 — Cadrage &amp; conformité (Semaine 0–1)</h3>
+      <div class="meta">Avant la première ligne de code.</div>
+      <ul>
+        <li>Choisir la <strong>niche précise</strong> : brokers forex FR, prop firms, crypto, signaux. Une niche, pas tout.</li>
+        <li>Créer <strong>persona éditorial</strong> : pseudonyme, ton, bio, logo.</li>
+        <li>Structure juridique : auto-entreprise (BNC) ou SASU. Vérifier franchise TVA.</li>
+        <li>Rédiger : mentions légales, CGU, politique de cookies, disclaimer risque (modèle ESMA).</li>
+        <li>Lister programmes d'affiliation cibles (Exness, FxPro, Vantage, IC Markets, FTMO, FundedNext, The5%ers…). Vérifier KYC affilié.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h3>Phase 1 — Infrastructure &amp; contenu pilier (Semaine 2–6)</h3>
+      <div class="meta">Fondation SEO et outillage.</div>
+      <ul>
+        <li>Domaine + hébergement (WordPress ou Astro). HTTPS obligatoire.</li>
+        <li>Installer : Ahrefs ou SEMrush (alternative gratuite : Google Search Console + Keyword Planner).</li>
+        <li>Capture email : Brevo / Mailerlite (plan gratuit).</li>
+        <li>Rédiger les <strong>3 piliers</strong> (3000–5000 mots chacun) : « Guide broker forex », « Guide prop trading », « Apprendre le trading ».</li>
+        <li>Maillage interne défini dès le départ (topic clusters).</li>
+        <li>Schema.org : Article, Person (persona), Review.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h3>Phase 2 — Production de contenu commercial (Semaine 6–16)</h3>
+      <div class="meta">Contenu qui convertit directement.</div>
+      <ul>
+        <li>Publier 3 articles / semaine : mix <span class="pill">60 % commercial</span> <span class="pill">40 % informationnel</span>.</li>
+        <li>Prioriser : comparatifs « X vs Y », tops, reviews de brokers/prop firms.</li>
+        <li>Insérer tableaux comparatifs + CTA par ligne sur chaque page commerciale.</li>
+        <li>Boîtes pros/cons, codes promo vérifiés, CTA sticky.</li>
+        <li>Chaque article commercial : disclaimer risque + mention affiliation visible.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h3>Phase 3 — Multiplication des canaux (Mois 4–6)</h3>
+      <div class="meta">Ne pas dépendre du seul SEO.</div>
+      <ul>
+        <li>Lancer chaîne YouTube faceless : 1 vidéo/semaine (voix-off ou IA type ElevenLabs, captures d'écran).</li>
+        <li>X (fintwit) : threads de synthèse d'articles, 3–5 tweets/jour.</li>
+        <li>Telegram : canal gratuit avec analyses + CTA vers broker partenaire.</li>
+        <li>Lead magnets : PDF « 10 erreurs débutant », accès Telegram → séquence email 7 messages.</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h3>Phase 4 — Optimisation &amp; échelle (Mois 7–12)</h3>
+      <div class="meta">Passer de « ça marche » à « ça scale ».</div>
+      <ul>
+        <li>A/B tests sur les pages à fort trafic : variantes de CTA, position tableau, copy.</li>
+        <li>Backlinks : guest posts, HARO, outreach aux newsletters fintwit.</li>
+        <li>Diversifier : minimum 3 partenaires affiliés par catégorie (risque MyForexFunds 2023).</li>
+        <li>Tester paid ads uniquement si funnel prouvé : Taboola/Outbrain en priorité (Google/Meta très restrictifs).</li>
+        <li>Construire assets détenus : liste email &gt; 3 000 abonnés, audience YouTube &gt; 5 000.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="trafic">
+  <h2>3. Canaux de trafic (classement ROI débutant)</h2>
+  <div class="kicker">Rapport 1 — consolidé avec les restrictions légales du Rapport 4.</div>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>Canal</th><th>Coût</th><th>Délai résultats</th><th>Points forts</th><th>Limites</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><strong>YouTube faceless</strong></td><td>Faible–moyen</td><td>3–9 mois</td><td>Evergreen, CPM finance élevé, intent search</td><td>Politiques strictes sur promesses de gains</td></tr>
+      <tr><td>2</td><td><strong>SEO</strong></td><td>Faible (interne) à moyen</td><td>6–12 mois (9–18 en trading)</td><td>Trafic qualifié transactionnel</td><td>YMYL exigeant, concurrence dure</td></tr>
+      <tr><td>3</td><td>Telegram</td><td>Faible</td><td>Semaines</td><td>Audience très engagée, conversion directe</td><td>Réputation « signals » dégradée, churn</td></tr>
+      <tr><td>4</td><td>Twitter / X</td><td>Faible</td><td>2–6 mois</td><td>Communauté fintwit active, viralité</td><td>Crédibilité lente en anonyme</td></tr>
+      <tr><td>5</td><td>TikTok / Reels</td><td>Faible</td><td>1–3 mois</td><td>Portée organique encore forte</td><td>Shadowban mots « forex/crypto », audience moins solvable</td></tr>
+      <tr><td>6</td><td>Email + lead magnets</td><td>Faible</td><td>Dépend acquisition</td><td>Asset détenu, LTV élevée</td><td>Délivrabilité sensible en finance</td></tr>
+      <tr><td>7</td><td>Sponsoring newsletters / Discord</td><td>Moyen–élevé</td><td>Immédiat</td><td>Trafic ciblé</td><td>ROI à tracker strictement (UTM)</td></tr>
+      <tr><td>8</td><td>Reddit / forums</td><td>Faible</td><td>Long</td><td>Audience ultra-ciblée</td><td>Règles anti-affiliation strictes</td></tr>
+      <tr><td>9</td><td>Paid ads natives (Taboola/Outbrain)</td><td>Élevé</td><td>Immédiat, optim. 4–8 sem</td><td>Contourne restrictions Google/Meta</td><td>CPC élevé, qualité variable, budget 1 000–3 000 € test (à valider)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="contenu">
+  <h2>4. Plan de contenu</h2>
+  <div class="kicker">Rapport 2 — formats et 20 idées d'articles.</div>
+
+  <h3>Formats classés par conversion × trafic</h3>
+  <ol>
+    <li><strong>Comparatifs « X vs Y »</strong> (broker/prop firm) — intent transactionnelle pure.</li>
+    <li><strong>Tops / Best of</strong> — capture le mot-clé « meilleur ».</li>
+    <li><strong>Reviews détaillées</strong> — longue traîne + brand terms.</li>
+    <li><strong>Guides stratégiques</strong> — fort pour EEAT.</li>
+    <li><strong>Tutoriels</strong> — conversion retardée mais solide.</li>
+    <li>News réglementation / lancements — pics courts, utile pour backlinks.</li>
+    <li>Glossaire — TOFU, nourrit les clusters.</li>
+  </ol>
+
+  <h3>20 idées d'articles</h3>
+  <table>
+    <thead><tr><th>#</th><th>Titre</th><th>Type</th><th>Angle monétisation</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Top 7 meilleurs brokers Forex régulés en France 2026</td><td><span class="pill accent">Commercial</span></td><td>CPA broker</td></tr>
+      <tr><td>2</td><td>FTMO vs FundedNext : quel prop firm choisir en 2026 ?</td><td><span class="pill accent">Commercial</span></td><td>Affiliation prop firm</td></tr>
+      <tr><td>3</td><td>The 5%ers vs MyFundedFX : comparatif challenges &amp; payouts</td><td><span class="pill accent">Commercial</span></td><td>Affiliation prop firm</td></tr>
+      <tr><td>4</td><td>Top 5 prop firms sans challenge (instant funding) 2026</td><td><span class="pill accent">Commercial</span></td><td>Affiliation</td></tr>
+      <tr><td>5</td><td>Meilleur broker crypto sans KYC : 4 options testées</td><td><span class="pill accent">Commercial</span></td><td>Affiliation broker crypto</td></tr>
+      <tr><td>6</td><td>Top 3 signaux trading Telegram payants qui valent le coup</td><td><span class="pill accent">Commercial</span></td><td>Affiliation signaux</td></tr>
+      <tr><td>7</td><td>Revue complète IC Markets 2026</td><td><span class="pill accent">Commercial</span></td><td>CPA broker</td></tr>
+      <tr><td>8</td><td>Qu'est-ce que le scalping ? Guide débutant</td><td><span class="pill">Informationnel</span></td><td>CTA broker ECN</td></tr>
+      <tr><td>9</td><td>Comment passer un challenge prop firm du premier coup</td><td><span class="pill">Info/Com</span></td><td>Affiliation prop firm</td></tr>
+      <tr><td>10</td><td>Meilleure formation trading en ligne FR 2026</td><td><span class="pill accent">Commercial</span></td><td>Affiliation cours</td></tr>
+      <tr><td>11</td><td>Trading automatique : 5 meilleurs EA MetaTrader 5</td><td><span class="pill accent">Commercial</span></td><td>Marketplace/broker</td></tr>
+      <tr><td>12</td><td>Fiscalité du trading en France 2026 : PFU, CTO, PEA</td><td><span class="pill">Informationnel</span></td><td>Trust + CTA broker</td></tr>
+      <tr><td>13</td><td>ICT / Smart Money Concepts expliqués</td><td><span class="pill">Informationnel</span></td><td>CTA prop firm</td></tr>
+      <tr><td>14</td><td>Meilleur broker pour trader l'or (XAU/USD)</td><td><span class="pill accent">Commercial</span></td><td>Affiliation</td></tr>
+      <tr><td>15</td><td>Pepperstone vs IC Markets : lequel pour le scalping ?</td><td><span class="pill accent">Commercial</span></td><td>CPA broker</td></tr>
+      <tr><td>16</td><td>Combien gagne un trader prop firm ? (données 2026)</td><td><span class="pill">Informationnel</span></td><td>Affiliation prop firm</td></tr>
+      <tr><td>17</td><td>10 erreurs qui font échouer 90 % des débutants</td><td><span class="pill">Informationnel</span></td><td>CTA formation + démo</td></tr>
+      <tr><td>18</td><td>Meilleur VPS pour trader : comparatif 2026</td><td><span class="pill accent">Commercial</span></td><td>Affiliation VPS + broker</td></tr>
+      <tr><td>19</td><td>Prop firms crypto : top 3 pour BTC/ETH</td><td><span class="pill accent">Commercial</span></td><td>Affiliation</td></tr>
+      <tr><td>20</td><td>Comment calculer son risque par trade (+ calculateur)</td><td><span class="pill">Informationnel</span></td><td>Lead magnet newsletter</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Cadence :</strong> 3 articles/semaine au lancement (12/mois), puis 2/sem en croisière. Ratio 60/40 commercial/info. 3 piliers : broker, prop trading, débutant.
+  </div>
+</section>
+
+<section id="conversion">
+  <h2>5. Conversion en marque anonyme (faceless)</h2>
+  <div class="kicker">Rapport 3.</div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Signaux de confiance sans identité</h3>
+      <ul>
+        <li>Widget Trustpilot / G2 intégré.</li>
+        <li>Contenu data-driven : backtests reproductibles, screenshots horodatés MT4/5.</li>
+        <li>Mention régulateurs (FCA, CySEC, ASIC, BaFin) avec numéro de licence.</li>
+        <li>Disclosure d'affiliation transparente — augmente la confiance perçue.</li>
+        <li>Persona cohérente : pseudonyme + logo + charte graphique stable.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Éléments de page qui convertissent</h3>
+      <ul>
+        <li>Tableau comparatif broker × spreads × levier × licence, CTA par ligne.</li>
+        <li>Boîtes pros/cons visuellement distinctes.</li>
+        <li>CTA sticky (sidebar desktop, barre mobile).</li>
+        <li>Exit-intent popup → lead magnet (pas offre directe).</li>
+        <li>Codes promo avec date d'expiration réelle (vérifiée côté broker).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Funnel recommandé</h3>
+      <p><strong>Hybride.</strong> Lien direct sur les pages review/brand ; capture email sur les guides TOFU. Le cycle de décision en trading est long (multi-jours) — une séquence de 5–7 emails traite l'objection « et si je perds ? ».</p>
+    </div>
+    <div class="card">
+      <h3>Copy &amp; CTA à utiliser</h3>
+      <ul>
+        <li>« Comparer les spreads en temps réel »</li>
+        <li>« Ouvrir un compte démo gratuit (sans dépôt) »</li>
+        <li>« Télécharger la checklist broker régulé »</li>
+        <li>« Tester la plateforme 30 jours sans risque »</li>
+        <li>« Recevoir le guide PDF — 10 erreurs qui coûtent cher »</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <strong>À bannir absolument :</strong> faux témoignages (photos stock), promesses de revenus, disclosure cachée, cloaking sans mention, absence de risk warning, reviews 10/10 sur tous les brokers.
+  </div>
+</section>
+
+<section id="conformite">
+  <h2>6. Conformité &amp; red flags légaux</h2>
+  <div class="kicker">Rapport 4 — corroboré par les références ESMA/AMF/DGCCRF.</div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>Obligations France / UE</h3>
+      <ul>
+        <li><strong>Publicité brokers non régulés : interdite</strong> (Code monétaire L533-12-7, issu de la loi du 9 déc. 2016). Amende jusqu'à 100 000 €.</li>
+        <li><strong>Risk warning ESMA</strong> : « XX % des comptes CFD perdent de l'argent » (% variable par broker, 74–89 % typique).</li>
+        <li><strong>Loi Influenceurs 2023 + ordonnance nov. 2024</strong> : mention « partenariat » / « lien affilié » obligatoire. DGCCRF a relevé 60 % d'anomalies sur 2023–2024.</li>
+        <li><strong>RGPD</strong> : consentement libre, éclairé, spécifique ; double opt-in recommandé CNIL ; renouvellement ~13 mois.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Fiscal &amp; structure</h3>
+      <ul>
+        <li>Revenus affiliation = <strong>BNC</strong> (parfois BIC).</li>
+        <li>Micro-entreprise : franchise TVA (seuil 2025 à revérifier au 2026-04-19).</li>
+        <li>Mentions légales obligatoires : éditeur, SIRET, directeur de publication, hébergeur (LCEN art. 6).</li>
+        <li><strong>L'anonymat public est possible</strong> (pseudonyme éditorial) ; l'anonymat légal, non.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Modes d'échec fréquents</h3>
+      <ul>
+        <li>Niche trop large vs éditeurs établis (Investopedia, Cafedutrading).</li>
+        <li>Contenu IA sans expertise (pénalité Helpful Content).</li>
+        <li>Dépendance mono-partenaire (cf. effondrement MyForexFunds 2023).</li>
+        <li>Abandon à 3–6 mois avant l'effet SEO cumulé.</li>
+        <li>Pas de liste email → trafic non réactivable.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Benchmarks économiques</h3>
+      <ul>
+        <li>Clic → inscription : 8–15 %</li>
+        <li>Inscription → FTD : 8–12 %</li>
+        <li>Clic → FTD : ~0,5–1,5 %</li>
+        <li>CPA forex : 100–1 850 $ (fourchette large, borne haute à valider)</li>
+        <li>Revenue share : 20–55 % à vie selon broker</li>
+        <li>Prop firms : 8–20 % du prix du challenge</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="calendrier">
+  <h2>7. Calendrier d'actions 12 mois</h2>
+  <div class="kicker">Hypothèse : 10 h/semaine, budget ~300 €/mois, SEO dominant.</div>
+
+  <table>
+    <thead>
+      <tr><th>Mois</th><th>Actions clés</th><th>Livrables</th><th>KPI cible</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>M1</td>
+        <td>Cadrage, persona, structure juridique, mentions légales, domaine, WordPress/Astro, recherche mots-clés.</td>
+        <td>Site en ligne, 3 piliers en rédaction, programmes affiliés approuvés.</td>
+        <td>Site déployé, Search Console actif</td>
+      </tr>
+      <tr>
+        <td>M2</td>
+        <td>Publication des 3 piliers + 4 articles commerciaux (comparatifs), maillage interne, GA4.</td>
+        <td>7 articles publiés, schema.org en place.</td>
+        <td>0–200 visites/mois</td>
+      </tr>
+      <tr>
+        <td>M3</td>
+        <td>10 articles publiés, lead magnet PDF, séquence email 7 msgs.</td>
+        <td>Funnel email opérationnel.</td>
+        <td>200–500 visites, 10–30 emails</td>
+      </tr>
+      <tr>
+        <td>M4</td>
+        <td>Lancement chaîne YouTube (1 vidéo/sem), lancement Telegram, premiers backlinks.</td>
+        <td>4 vidéos YouTube, canal Telegram actif.</td>
+        <td>500–1 500 visites, 1ers FTD possibles</td>
+      </tr>
+      <tr>
+        <td>M5–M6</td>
+        <td>Rythme 2 articles/sem + 1 vidéo/sem, outreach backlinks, sponsoring newsletter (test).</td>
+        <td>25–30 articles totaux, 8 vidéos.</td>
+        <td>1 500–3 000 visites, 0–3 FTD</td>
+      </tr>
+      <tr>
+        <td>M7–M9</td>
+        <td>A/B tests CTA, diversification partenaires (≥3 par catégorie), X (fintwit) 3–5 tweets/j.</td>
+        <td>Version optimisée des pages top trafic.</td>
+        <td>2 000–10 000 visites, 2–15 FTD</td>
+      </tr>
+      <tr>
+        <td>M10–M12</td>
+        <td>Scale contenu (rédaction externe si ROI ok), test paid ads natives, audit EEAT.</td>
+        <td>60+ articles, liste email 500–3 000, YouTube 1 000–5 000 abos.</td>
+        <td>5 000–25 000 visites, 5–40 FTD</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="projections">
+  <h2>8. Résultats projetés</h2>
+  <div class="kicker">Rapport 4 — fourchettes, pas des prévisions. Médiane sectorielle = bas de fourchette.</div>
+
+  <table>
+    <thead>
+      <tr><th>Période</th><th>Trafic / mois</th><th>Emails capturés</th><th>FTD générés</th><th>Revenu mensuel (€)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>M1–M3</td><td>0–500</td><td>0–30</td><td>0</td><td>0</td></tr>
+      <tr><td>M4–M6</td><td>500–3 000</td><td>50–300</td><td>0–3</td><td>0–500</td></tr>
+      <tr><td>M7–M9</td><td>2 000–10 000</td><td>200–1 000</td><td>2–15</td><td>200–2 000</td></tr>
+      <tr><td>M10–M12</td><td>5 000–25 000</td><td>500–3 000</td><td>5–40</td><td>500–6 000</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <strong>Réalisme :</strong> 70–80 % des sites d'affiliation n'atteignent jamais 500 €/mois (chiffre-cliché, à considérer comme ordre de grandeur). Les meilleurs résultats viennent d'une <strong>discipline éditoriale continue &gt; 12 mois</strong>, pas d'un hack.
+  </div>
+</section>
+
+<section id="reserves">
+  <h2>9. Réserves du vérificateur</h2>
+  <div class="kicker">Agent 5 — cross-check des 4 rapports.</div>
+
+  <h3>Contradictions inter-agents</h3>
+  <ul>
+    <li><strong>Anonymat :</strong> R3 préconise un pseudonyme comme signal de confiance ; R4 rappelle qu'il est illusoire juridiquement. À concilier : pseudonyme public + identité légale dans les mentions.</li>
+    <li><strong>Disclaimer CFD 74–89 % :</strong> R2 le cite comme fixe ; R4 précise qu'il est variable par broker (correct).</li>
+    <li><strong>Délai SEO :</strong> R1 dit 6–12 mois ; R4 dit 9–18 mois pour trading. La fourchette prudente est 9–18.</li>
+  </ul>
+
+  <h3>Affirmations à vérifier avant action</h3>
+  <ul>
+    <li><span class="pill danger">Haute</span> « Conversion ~16 % pour comparatifs X vs Y » (R2) — chiffre invérifiable, probablement optimiste.</li>
+    <li><span class="pill danger">Haute</span> Référence « Sapin II 2016, 100 k€ » (R4) — le fondement est plutôt L533-12-7 du Code monétaire issu de la loi du 9 déc. 2016. À citer correctement.</li>
+    <li><span class="pill warn">Moyenne</span> « CPA Forex 100–1 850 $ » (R4) — borne haute à sourcer par broker spécifique.</li>
+    <li><span class="pill warn">Moyenne</span> « 70–80 % des sites affiliés n'atteignent pas 500 €/mois » — chiffre populaire sans étude claire.</li>
+    <li><span class="pill">Faible</span> Seuil TVA micro-entreprise 2025 — à revérifier au 2026-04-19 (plafond modifié récemment).</li>
+  </ul>
+
+  <h3>Lacunes identifiées</h3>
+  <ul>
+    <li>Pas de benchmark concurrentiel précis (niches trading déjà saturées).</li>
+    <li>Pas de seuil de concentration max post-MyForexFunds (combien de % du revenu par partenaire au maximum).</li>
+    <li>Coûts juridiques (CGU, DPO éventuel) non chiffrés.</li>
+    <li>Responsabilité éditoriale LCEN art. 6 non traitée.</li>
+  </ul>
+
+  <h3>Verdict par agent</h3>
+  <table>
+    <thead><tr><th>Agent</th><th>Note</th><th>Justification</th></tr></thead>
+    <tbody>
+      <tr><td>R1 — Trafic</td><td><span class="grade C">C</span></td><td>Hiérarchisation utile, mais chiffres « à vérifier », pas de sources.</td></tr>
+      <tr><td>R2 — Contenu</td><td><span class="grade B">B</span></td><td>Sources nommées, plan cohérent ; 16 % et 60/40 fragilisent.</td></tr>
+      <tr><td>R3 — Conversion</td><td><span class="grade B">B</span></td><td>Conseils solides, zéro source ; tension anonymat/légal.</td></tr>
+      <tr><td>R4 — Conformité</td><td><span class="grade A">A-</span></td><td>Seul réellement sourcé et chiffré ; vérifier refs juridiques avant action.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+
+<footer>
+  Document de travail — basé sur 4 rapports de recherche + vérification croisée. Ne constitue pas un conseil juridique ni en investissement. Faire valider les points réglementaires par un professionnel avant publication.
+</footer>
+
+</body>
+</html>
